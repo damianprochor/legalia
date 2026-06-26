@@ -271,3 +271,68 @@ tbody tr:hover { background: var(--surface2); }
   .grid-3 { grid-template-columns: 1fr 1fr; }
   .content { padding: 16px; }
 }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .content { padding: 10px; }
+
+  /* topbar compacto */
+  .topbar { padding: 0 12px; height: 48px; }
+  .topbar-logo .sub { display: none; }
+  .topbar-logo .name { font-size: 14px; }
+  .topbar-logo .icon { width: 26px; height: 26px; font-size: 13px; }
+  .empresa-badge { font-size: 10px; padding: 3px 8px; }
+
+  /* tabs en scroll horizontal */
+  .tabs-nav { padding: 0 8px; overflow-x: auto; gap: 0; scrollbar-width: none; }
+  .tabs-nav::-webkit-scrollbar { display: none; }
+  .tab-btn { padding: 10px 12px; font-size: 12px; white-space: nowrap; }
+  .tab-btn svg { display: none; }
+
+  /* chat layout: sidebar arriba colapsado, chat abajo */
+  .grid-chat { grid-template-columns: 1fr; gap: 10px; }
+
+  /* sidebar colapsado en mobile */
+  .empresa-info { padding: 12px; }
+  .empresa-header { margin-bottom: 8px; }
+  .empresa-av { width: 36px; height: 36px; font-size: 16px; border-radius: 8px; }
+  .empresa-av-name { font-size: 13px; }
+  .empresa-av-sub { font-size: 11px; }
+  .info-row { font-size: 12px; }
+
+  /* ocultar lista de abogados en mobile para ahorrar espacio */
+  .empresa-info > div:last-child { display: none; }
+
+  /* mensajes */
+  .messages { min-height: 220px; max-height: 320px; }
+  .bubble { font-size: 13px; padding: 8px 12px; max-width: 88%; }
+
+  /* sugerencias en scroll horizontal */
+  .sugs { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; gap: 6px; }
+  .sugs::-webkit-scrollbar { display: none; }
+  .sug { white-space: nowrap; font-size: 11px; padding: 5px 10px; flex-shrink: 0; }
+
+  /* input */
+  .input-row input { font-size: 13px; padding: 9px 12px; }
+  .send-btn { width: 36px; height: 36px; }
+  .disclaimer { font-size: 10px; }
+
+  /* dashboard */
+  .grid-3 { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .metric-val { font-size: 22px; }
+  .grid-2 { grid-template-columns: 1fr; }
+  table { font-size: 11px; }
+  thead th { padding: 8px 6px; }
+  tbody td { padding: 8px 6px; }
+
+  /* perfiles */
+  .profiles-grid { grid-template-columns: 1fr; }
+  .profile-header { padding: 14px; }
+  .profile-av { width: 44px; height: 44px; font-size: 14px; }
+  .profile-name { font-size: 14px; }
+}
+
+@media (max-width: 380px) {
+  .grid-3 { grid-template-columns: 1fr; }
+  .tab-btn { padding: 10px 10px; font-size: 11px; }
+}
