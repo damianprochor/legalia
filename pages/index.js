@@ -373,11 +373,23 @@ function TabAbogados({ cases }) {
   );
 }
 
-//  ROOT APP 
+// ROOT APP
 export default function App() {
   const [tab, setTab] = useState("empresa");
-  const [cases, setCases] = useState([]);
+  const [cases, setCases] = useState(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const saved = localStorage.getItem("legalia_cases");
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
   const [newCaseCount, setNewCaseCount] = useState(0);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try { localStorage.setItem("legalia_cases", JSON.stringify(cases)); } catch {}
+    }
+  }, [cases]);
 
   const handleNewCase = useCallback((c) => {
     setCases((prev) => [...prev, c]);
@@ -387,7 +399,7 @@ export default function App() {
   const tabs = [
     {
       id: "empresa",
-      label: "Empresa X  Consultas",
+      label: "Empresa X — Consultas",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16M3 21h18M9 21V9h6v12"/>
@@ -396,7 +408,7 @@ export default function App() {
     },
     {
       id: "dashboard",
-      label: "12 Tablas IA  Panel",
+      label: "12 Tablas IA — Panel",
       dot: newCaseCount > 0,
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -426,7 +438,7 @@ export default function App() {
           <div className="icon"></div>
           <div>
             <div className="name">12 Tablas <span>IA</span></div>
-            <div className="sub">Plataforma de orientacin jurdica</div>
+            <div className="sub">Plataforma de orientación jurídica</div>
           </div>
         </div>
         <div className="topbar-right">
