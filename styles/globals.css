@@ -101,12 +101,12 @@ body {
 /*  GRID  */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.grid-chat { display: grid; grid-template-columns: 320px 1fr; gap: 16px; align-items: start; }
+.grid-chat { display: grid; grid-template-columns: 280px 1fr; gap: 16px; align-items: start; }
 
 /*  CHAT  */
 .messages {
   display: flex; flex-direction: column; gap: 10px;
-  min-height: 300px; max-height: 380px; overflow-y: auto;
+  min-height: 120px; max-height: 440px; overflow-y: auto;
   padding: 4px 2px; margin-bottom: 12px;
   scrollbar-width: thin; scrollbar-color: var(--border) transparent;
 }

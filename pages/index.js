@@ -163,9 +163,10 @@ function TabEmpresa({ onNewCase }) {
 
         {/* chat */}
         <div className="card" style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-          <div className="card-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-            Agente jurídico 12 Tablas IA
+          <div style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px 6px",borderBottom:"1px solid var(--border)",marginBottom:8}}>
+            <div style={{width:22,height:22,borderRadius:"50%",background:"var(--navy)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#c8e8ff",flexShrink:0}}></div>
+            <span style={{fontSize:13,fontWeight:600,color:"var(--text2)"}}>Agente jurídico 12 Tablas IA</span>
+            <span style={{marginLeft:"auto",fontSize:11,color:"var(--text-success, #2d7a4f)",display:"flex",alignItems:"center",gap:4}}><span style={{width:6,height:6,borderRadius:"50%",background:"#2d7a4f",display:"inline-block"}}></span>En línea</span>
           </div>
 
           <div className="messages" ref={msgsRef}>
@@ -435,7 +436,7 @@ export default function App() {
     <>
       <div className="topbar">
         <div className="topbar-logo">
-          <div className="icon"></div>
+          <div className="icon" style={{fontSize:"14px",width:"28px",height:"28px"}}></div>
           <div>
             <div className="name">12 Tablas <span>IA</span></div>
             <div className="sub">Plataforma de orientación jurídica</div>
