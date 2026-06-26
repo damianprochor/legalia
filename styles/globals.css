@@ -1,4 +1,5 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+svg { max-width: 100%; }
 
 :root {
   --navy: #0f2744;
@@ -90,6 +91,7 @@ body {
 .card {
   background: var(--surface); border-radius: var(--radius);
   border: 1px solid var(--border); padding: 20px;
+  overflow: hidden;
 }
 .card-sm { padding: 14px 16px; }
 .card-title {
@@ -97,6 +99,7 @@ body {
   margin-bottom: 14px; display: flex; align-items: center; gap: 7px;
   text-transform: uppercase; letter-spacing: .4px;
 }
+.card-title svg { width: 16px; height: 16px; flex-shrink: 0; }
 
 /*  GRID  */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -267,6 +270,13 @@ tbody tr:hover { background: var(--surface2); }
 
 /*  RESPONSIVE  */
 @media (max-width: 768px) {
+  /* constrain all svgs */
+  .card-title svg, .tab-btn svg { width: 14px !important; height: 14px !important; }
+  /* hide sidebar on mobile */
+  .desktop-only { display: none !important; }
+  /* hide empresa sidebar on mobile, show compact info instead */
+  .empresa-info { padding: 10px 12px; }
+  .empresa-info .card-title { display: none; }
   .grid-chat { grid-template-columns: 1fr; }
   .grid-3 { grid-template-columns: 1fr 1fr; }
   .content { padding: 16px; }

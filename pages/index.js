@@ -225,7 +225,7 @@ function TabEmpresa({ empresa, onNewCase, onReset, storageKey }) {
   return (
     <div className="content">
       <div className="grid-chat">
-        <div className="card empresa-info">
+        <div className="card empresa-info desktop-only">
           <div className="card-title">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16M3 21h18M9 21V9h6v12"/></svg>
             Cliente
