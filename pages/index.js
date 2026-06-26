@@ -50,7 +50,7 @@ function TabEmpresa({ onNewCase }) {
   const [msgs, setMsgs] = useState([
     {
       role: "bot",
-      html: `Bienvenido, <strong>${EMPRESA.contacto.split("")[0].trim()}</strong>! Soy el agente jurdico de <strong>12 Tablas IA</strong> asignado a <strong>${EMPRESA.nombre}</strong>.<br/><br/>Pods consultarme sobre contratos, relaciones laborales, habilitaciones, facturacin, proteccin de datos y ms. En qu te puedo ayudar hoy?`,
+      html: `Bienvenido, <strong>${EMPRESA.contacto.split("")[0].trim()}</strong>! Soy el agente jurídico de <strong>12 Tablas IA</strong> asignado a <strong>${EMPRESA.nombre}</strong>.<br/><br/>Podés consultarme sobre contratos, relaciones laborales, habilitaciones, facturación, protección de datos y más. En qué te puedo ayudar hoy?`,
     },
   ]);
   const [input, setInput] = useState("");
@@ -63,10 +63,10 @@ function TabEmpresa({ onNewCase }) {
   }, [msgs]);
 
   const SUGS = [
-    "Qu necesito para contratar un empleado nuevo?",
-    "Un cliente no pag una factura hace 60 das",
-    "Quiero modificar una clusula de mi contrato de alquiler",
-    "Cmo hago para habilitar una nueva sucursal?",
+    "Qué necesito para contratar un empleado nuevo?",
+    "Un cliente no pagó una factura hace 60 días",
+    "Quiero modificar una cláusula de mi contrato de alquiler",
+    "Cómo hago para habilitar una nueva sucursal?",
   ];
 
   async function send(text) {
@@ -165,7 +165,7 @@ function TabEmpresa({ onNewCase }) {
         <div className="card" style={{ display: "flex", flexDirection: "column", gap: 0 }}>
           <div className="card-title">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-            Agente jurdico 12 Tablas IA
+            Agente jurídico 12 Tablas IA
           </div>
 
           <div className="messages" ref={msgsRef}>
@@ -202,14 +202,14 @@ function TabEmpresa({ onNewCase }) {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && send(input)}
-              placeholder="Escrib tu consulta jurdica..."
+              placeholder="Escribí tu consulta jurídica..."
               disabled={loading}
             />
             <button className="send-btn" onClick={() => send(input)} disabled={loading}>
               <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
             </button>
           </div>
-          <div className="disclaimer">Este agente brinda orientacin general, no constituye ejercicio de la abogaca.  12 Tablas Digital  2026</div>
+          <div className="disclaimer">Este agente brinda orientación general, no constituye ejercicio de la abogacía.  12 Tablas Digital  2026</div>
         </div>
       </div>
     </div>
@@ -231,7 +231,7 @@ function TabDashboard({ cases }) {
     <div className="content">
       <div className="grid-3" style={{ marginBottom: 20 }}>
         {[
-          { val: total, lbl: "Consultas totales (sesin)", sub: " en tiempo real", cls: "blue" },
+          { val: total, lbl: "Consultas totales (sesión)", sub: " en tiempo real", cls: "blue" },
           { val: derivadas, lbl: "Derivadas a abogado", sub: "Casos complejos asignados", cls: "amber" },
           { val: empresas, lbl: "Empresas activas", sub: "Clientes B2B conectados", cls: "green" },
         ].map((m) => (
@@ -351,7 +351,7 @@ function TabAbogados({ cases }) {
               </div>
               <div className="profile-cases">
                 {myCases.length === 0 ? (
-                  <div className="empty-cases">Sin casos asignados an</div>
+                  <div className="empty-cases">Sin casos asignados aún</div>
                 ) : (
                   [...myCases].reverse().map((c, i) => (
                     <div key={i} className="case-item">
