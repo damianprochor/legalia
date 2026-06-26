@@ -59,6 +59,87 @@ function pickLawyer(areaLegal) {
   return ABOGADOS.find((a) => a.id === id) || ABOGADOS[0];
 }
 
+function downloadPDF(c, abogado) {
+  const fecha = new Date().toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" });
+  const html = `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Expediente - ${c.resumen}</title>
+<style>
+  body { font-family: Georgia, serif; margin: 0; padding: 40px; color: #1a1a1a; font-size: 13px; }
+  .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f2744; padding-bottom: 16px; margin-bottom: 24px; }
+  .logo { font-size: 20px; font-weight: bold; color: #0f2744; }
+  .logo span { color: #1a6fa8; }
+  .logo-sub { font-size: 11px; color: #666; margin-top: 2px; }
+  .doc-info { text-align: right; font-size: 11px; color: #666; }
+  .doc-num { font-size: 13px; font-weight: bold; color: #0f2744; }
+  h1 { font-size: 16px; color: #0f2744; margin: 0 0 20px; }
+  .section { margin-bottom: 20px; }
+  .section-title { font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: #666; border-bottom: 1px solid #e0e0e0; padding-bottom: 4px; margin-bottom: 10px; }
+  .field { display: flex; margin-bottom: 8px; }
+  .field-label { width: 160px; font-size: 12px; color: #666; flex-shrink: 0; }
+  .field-value { font-size: 12px; font-weight: 500; color: #1a1a1a; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+  .badge-compleja { background: #fcebeb; color: #a32d2d; }
+  .badge-area { background: #f0f0f0; color: #444; }
+  .abogado-box { background: #e8f4fb; border: 1px solid #b5d4f4; border-radius: 8px; padding: 14px; margin-top: 8px; }
+  .abogado-name { font-size: 14px; font-weight: bold; color: #0f2744; margin-bottom: 4px; }
+  .abogado-esp { font-size: 12px; color: #1a6fa8; }
+  .disclaimer { margin-top: 32px; padding-top: 12px; border-top: 1px solid #e0e0e0; font-size: 10px; color: #999; line-height: 1.5; }
+  .footer { margin-top: 40px; text-align: center; font-size: 10px; color: #bbb; }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <div class="logo">12 Tablas <span>IA</span></div>
+      <div class="logo-sub">Plataforma de orientaci&oacute;n jur&iacute;dica</div>
+    </div>
+    <div class="doc-info">
+      <div class="doc-num">EXP-${Math.random().toString(36).substr(2,8).toUpperCase()}</div>
+      <div>Fecha: ${fecha}</div>
+      <div>Hora: ${c.hora}</div>
+    </div>
+  </div>
+
+  <h1>Expediente de caso asignado</h1>
+
+  <div class="section">
+    <div class="section-title">Datos del cliente</div>
+    <div class="field"><div class="field-label">Empresa</div><div class="field-value">${c.empresa}</div></div>
+    <div class="field"><div class="field-label">Clasificaci&oacute;n</div><div class="field-value"><span class="badge badge-compleja">Compleja</span></div></div>
+    <div class="field"><div class="field-label">&Aacute;rea legal</div><div class="field-value"><span class="badge badge-area">${c.area}</span></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Resumen del caso</div>
+    <p style="margin:0;line-height:1.6;">${c.resumen}</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Abogado asignado</div>
+    <div class="abogado-box">
+      <div class="abogado-name">${abogado.nombre}</div>
+      <div class="abogado-esp">${abogado.especialidad} &middot; Red 12 Tablas IA</div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    Este documento es generado autom&aacute;ticamente por el sistema 12 Tablas IA con fines de orientaci&oacute;n jur&iacute;dica. No constituye asesoramiento jur&iacute;dico formal ni ejercicio de la abogac&iacute;a. Para asesoramiento profesional, consulte directamente con el abogado asignado.
+  </div>
+  <div class="footer">12 Tablas Digital &copy; 2026 &mdash; legalia-one.vercel.app</div>
+</body>
+</html>`;
+
+  const blob = new Blob([html], { type: "text/html" });
+  const url = URL.createObjectURL(blob);
+  const w = window.open(url, "_blank");
+  if (w) setTimeout(() => { w.print(); URL.revokeObjectURL(url); }, 500);
+}
+
+
+
 const SYSTEM_PROMPT_EMPRESA = (empresa) => `Sos el agente jur\u00eddico de "12 Tablas IA", asistente legal de ${empresa.nombre} (${empresa.rubro}).
 
 Tu respuesta debe ser UNICAMENTE un objeto JSON v\u00e1lido, sin texto adicional, sin backticks, sin markdown:
@@ -334,9 +415,16 @@ function TabAbogados({ cases }) {
                     <div key={i} className="case-item">
                       <div className="case-empresa">{c.empresa}</div>
                       <div className="case-resumen">{c.resumen}</div>
-                      <div style={{ display: "flex", gap: 6, marginTop: 4 }}>
+                      <div style={{ display: "flex", gap: 6, marginTop: 6, alignItems: "center" }}>
                         <span className="badge area">{c.area}</span>
                         <span className="case-time">{c.hora}</span>
+                        <button
+                          onClick={() => downloadPDF(c, a)}
+                          style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 4, fontSize: 11, padding: "3px 10px", borderRadius: 6, border: "1px solid var(--border2)", background: "var(--surface)", cursor: "pointer", color: "var(--blue, #1a6fa8)", fontWeight: 600 }}
+                        >
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                          Expediente PDF
+                        </button>
                       </div>
                     </div>
                   ))
