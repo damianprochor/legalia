@@ -6,31 +6,31 @@ const EMPRESAS = [
     id: "empresax",
     nombre: "Empresa X S.A.",
     inicial: "X",
-    rubro: "Tecnolog\u00eda y Servicios",
+    rubro: "Tecnología y Servicios",
     cuit: "30-71234567-2",
-    contacto: "Lic. Roberto M\u00e9ndez",
+    contacto: "Lic. Roberto Méndez",
     rol: "Gerente Administrativo",
     color: "#0f2744",
     sugs: [
-      "\u00bfQu\u00e9 necesito para contratar un empleado nuevo?",
-      "Un cliente no pag\u00f3 una factura hace 60 d\u00edas",
-      "Quiero modificar una cl\u00e1usula de mi contrato de alquiler",
-      "\u00bfC\u00f3mo hago para habilitar una nueva sucursal?",
+      "¿Qué necesito para contratar un empleado nuevo?",
+      "Un cliente no pagó una factura hace 60 días",
+      "Quiero modificar una cláusula de mi contrato de alquiler",
+      "¿Cómo hago para habilitar una nueva sucursal?",
     ],
   },
   {
     id: "empresay",
     nombre: "Constructora Y S.R.L.",
     inicial: "Y",
-    rubro: "Construcci\u00f3n e Infraestructura",
+    rubro: "Construcción e Infraestructura",
     cuit: "30-68901234-1",
-    contacto: "Ing. Laura Fern\u00e1ndez",
+    contacto: "Ing. Laura Fernández",
     rol: "Directora de Operaciones",
     color: "#2d5a1b",
     sugs: [
-      "Un obrero sufri\u00f3 un accidente en obra, \u00bfqu\u00e9 hago?",
-      "El municipio demor\u00f3 el permiso de construcci\u00f3n 3 meses",
-      "\u00bfPuedo subcontratar sin modificar el contrato principal?",
+      "Un obrero sufrió un accidente en obra, ¿qué hago?",
+      "El municipio demoró el permiso de construcción 3 meses",
+      "¿Puedo subcontratar sin modificar el contrato principal?",
       "Tengo una disputa con un proveedor de materiales",
     ],
   },
@@ -140,26 +140,26 @@ function downloadPDF(c, abogado) {
 
 
 
-const SYSTEM_PROMPT_EMPRESA = (empresa) => `Sos el agente jur\u00eddico de "12 Tablas IA", asistente legal de ${empresa.nombre} (${empresa.rubro}).
+const SYSTEM_PROMPT_EMPRESA = (empresa) => `Sos el agente jurídico de "12 Tablas IA", asistente legal de ${empresa.nombre} (${empresa.rubro}).
 
-Tu respuesta debe ser UNICAMENTE un objeto JSON v\u00e1lido, sin texto adicional, sin backticks, sin markdown:
+Tu respuesta debe ser UNICAMENTE un objeto JSON válido, sin texto adicional, sin backticks, sin markdown:
 
-{"clasificacion":"administrativa"|"intermedia"|"compleja","respuesta":"texto plano, m\u00e1x 3 oraciones","requiere_abogado":true|false,"area_legal":"una de las 5 \u00e1reas","resumen_caso":"8-12 palabras"}
+{"clasificacion":"administrativa"|"intermedia"|"compleja","respuesta":"texto plano, máx 3 oraciones","requiere_abogado":true|false,"area_legal":"una de las 5 áreas","resumen_caso":"8-12 palabras"}
 
 AREAS: Derecho Laboral, Derecho Civil y Contratos, Derecho Societario, Derecho Administrativo, Defensa del Consumidor.
 
-REGLAS DE DERIVACI\u00d3N (requiere_abogado: true) cuando:
-- El usuario pide expl\u00edcitamente un abogado
-- Conflicto activo con tercero, deuda vencida +30 d\u00edas, riesgo judicial
-- Accidente laboral, sanci\u00f3n administrativa, modificaci\u00f3n de contrato con cl\u00e1usulas sensibles
+REGLAS DE DERIVACIÓN (requiere_abogado: true) cuando:
+- El usuario pide explícitamente un abogado
+- Conflicto activo con tercero, deuda vencida +30 días, riesgo judicial
+- Accidente laboral, sanción administrativa, modificación de contrato con cláusulas sensibles
 
-Respond\u00e9 en espa\u00f1ol rioplatense, claro y directo.`;
+Respondé en español rioplatense, claro y directo.`;
 
 // TAB EMPRESA - una por empresa
 function TabEmpresa({ empresa, onNewCase, onReset, storageKey }) {
   const initMsg = [{
     role: "bot",
-    html: `\u00a1Bienvenida, <strong>${empresa.contacto}</strong>! Soy el agente jur\u00eddico de <strong>12 Tablas IA</strong> asignado a <strong>${empresa.nombre}</strong>.<br/><br/>Pod\u00e9s consultarme sobre contratos, relaciones laborales, habilitaciones, facturaci\u00f3n, protecci\u00f3n de datos y m\u00e1s. \u00bfEn qu\u00e9 te puedo ayudar hoy?`,
+    html: `¡Bienvenida, <strong>${empresa.contacto}</strong>! Soy el agente jurídico de <strong>12 Tablas IA</strong> asignado a <strong>${empresa.nombre}</strong>.<br/><br/>Podés consultarme sobre contratos, relaciones laborales, habilitaciones, facturación, protección de datos y más. ¿En qué te puedo ayudar hoy?`,
   }];
 
   const [msgs, setMsgs] = useState(() => {
@@ -212,12 +212,12 @@ function TabEmpresa({ empresa, onNewCase, onReset, storageKey }) {
 
       if (data.requiere_abogado) {
         const lawyer = pickLawyer(data.area_legal);
-        html += `<div class="abogado-asig"><div class="abog-av" style="background:${lawyer.color}">${lawyer.iniciales}</div><div class="abog-info"><p>${lawyer.nombre}</p><span>${lawyer.especialidad} \u00b7 Red 12 Tablas IA</span></div><span class="badge area" style="margin-left:auto">Asignado \u2192</span></div>`;
+        html += `<div class="abogado-asig"><div class="abog-av" style="background:${lawyer.color}">${lawyer.iniciales}</div><div class="abog-info"><p>${lawyer.nombre}</p><span>${lawyer.especialidad} · Red 12 Tablas IA</span></div><span class="badge area" style="margin-left:auto">Asignado →</span></div>`;
         onNewCase({ lawyer, area: data.area_legal, resumen: data.resumen_caso || text, empresa: empresa.nombre, hora: now() });
       }
       setMsgs((m) => [...m, { role: "bot", html }]);
     } catch {
-      setMsgs((m) => [...m, { role: "bot", html: "Error al conectar con el agente. Intent\u00e1 de nuevo." }]);
+      setMsgs((m) => [...m, { role: "bot", html: "Error al conectar con el agente. Intentá de nuevo." }]);
     }
     setLoading(false);
   }
@@ -258,12 +258,12 @@ function TabEmpresa({ empresa, onNewCase, onReset, storageKey }) {
 
         <div className="card" style={{ display: "flex", flexDirection: "column", gap: 0 }}>
           <div style={{ display:"flex", alignItems:"center", gap:8, padding:"10px 14px 6px", borderBottom:"1px solid var(--border)", marginBottom:8 }}>
-            <div style={{ width:22, height:22, borderRadius:"50%", background:"var(--navy)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, color:"#c8e8ff", flexShrink:0 }}>\u2696</div>
-            <span style={{ fontSize:13, fontWeight:600, color:"var(--text2)" }}>Agente jur\u00eddico 12 Tablas IA</span>
+            <div style={{ width:22, height:22, borderRadius:"50%", background:"var(--navy)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, color:"#c8e8ff", flexShrink:0 }}>⚖</div>
+            <span style={{ fontSize:13, fontWeight:600, color:"var(--text2)" }}>Agente jurídico 12 Tablas IA</span>
             <span style={{ marginLeft:"auto", fontSize:11, color:"#2d7a4f", display:"flex", alignItems:"center", gap:4 }}>
-              <span style={{ width:6, height:6, borderRadius:"50%", background:"#2d7a4f", display:"inline-block" }}></span>En l\u00ednea
+              <span style={{ width:6, height:6, borderRadius:"50%", background:"#2d7a4f", display:"inline-block" }}></span>En línea
             </span>
-            <button onClick={reset} title="Limpiar conversaci\u00f3n" style={{ marginLeft:8, background:"none", border:"1px solid var(--border2)", borderRadius:6, cursor:"pointer", padding:"3px 10px", fontSize:11, color:"var(--text3)", display:"flex", alignItems:"center", gap:4 }}>
+            <button onClick={reset} title="Limpiar conversación" style={{ marginLeft:8, background:"none", border:"1px solid var(--border2)", borderRadius:6, cursor:"pointer", padding:"3px 10px", fontSize:11, color:"var(--text3)", display:"flex", alignItems:"center", gap:4 }}>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
               Reset demo
             </button>
@@ -272,13 +272,13 @@ function TabEmpresa({ empresa, onNewCase, onReset, storageKey }) {
           <div className="messages" ref={msgsRef}>
             {msgs.map((m, i) => (
               <div key={i} className={`msg ${m.role}`}>
-                {m.role === "bot" ? <div className="avatar bot">\u2696</div> : <div className="avatar user">{empresa.inicial[0]}Mx</div>}
+                {m.role === "bot" ? <div className="avatar bot">⚖</div> : <div className="avatar user">{empresa.inicial[0]}Mx</div>}
                 <div className="bubble" dangerouslySetInnerHTML={{ __html: m.html }} />
               </div>
             ))}
             {loading && (
               <div className="msg bot">
-                <div className="avatar bot">\u2696</div>
+                <div className="avatar bot">⚖</div>
                 <div className="bubble"><div className="typing-dots"><div className="dot"/><div className="dot"/><div className="dot"/></div></div>
               </div>
             )}
@@ -289,12 +289,12 @@ function TabEmpresa({ empresa, onNewCase, onReset, storageKey }) {
           </div>
 
           <div className="input-row">
-            <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && send(input)} placeholder="Escrib\u00ed tu consulta jur\u00eddica..." disabled={loading} />
+            <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && send(input)} placeholder="Escribí tu consulta jurídica..." disabled={loading} />
             <button className="send-btn" onClick={() => send(input)} disabled={loading}>
               <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
             </button>
           </div>
-          <div className="disclaimer">Este agente brinda orientaci\u00f3n general, no constituye ejercicio de la abogac\u00eda. \u2014 12 Tablas Digital \u00a9 2026</div>
+          <div className="disclaimer">Este agente brinda orientación general, no constituye ejercicio de la abogacía. — 12 Tablas Digital © 2026</div>
         </div>
       </div>
     </div>
@@ -312,7 +312,7 @@ function TabDashboard({ cases }) {
     <div className="content">
       <div className="grid-3" style={{ marginBottom: 20 }}>
         {[
-          { val: total, lbl: "Consultas totales (sesi\u00f3n)", sub: "\u2191 en tiempo real", cls: "blue" },
+          { val: total, lbl: "Consultas totales (sesión)", sub: "↑ en tiempo real", cls: "blue" },
           { val: derivadas, lbl: "Derivadas a abogado", sub: "Casos complejos asignados", cls: "amber" },
           { val: empresas, lbl: "Empresas activas", sub: "Clientes B2B conectados", cls: "green" },
         ].map((m) => (
@@ -334,7 +334,7 @@ function TabDashboard({ cases }) {
             <div style={{ color: "var(--text3)", fontSize: 13, padding: "20px 0", textAlign: "center" }}>Esperando consultas de las empresas...</div>
           ) : (
             <table>
-              <thead><tr><th>Empresa</th><th>Caso</th><th>\u00c1rea</th><th>Abogado asignado</th><th>Hora</th></tr></thead>
+              <thead><tr><th>Empresa</th><th>Caso</th><th>Área</th><th>Abogado asignado</th><th>Hora</th></tr></thead>
               <tbody>
                 {[...cases].reverse().map((c, i) => (
                   <tr key={i}>
@@ -347,7 +347,7 @@ function TabDashboard({ cases }) {
                           <Avatar initials={c.lawyer.iniciales} color={c.lawyer.color} size={24} />
                           <span style={{ fontSize: 12 }}>{c.lawyer.nombre}</span>
                         </div>
-                      ) : <span style={{ color: "var(--text3)", fontSize: 12 }}>\u2014</span>}
+                      ) : <span style={{ color: "var(--text3)", fontSize: 12 }}>—</span>}
                     </td>
                     <td style={{ color: "var(--text3)", fontSize: 12 }}>{c.hora}</td>
                   </tr>
@@ -360,7 +360,7 @@ function TabDashboard({ cases }) {
         <div className="card">
           <div className="card-title">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width:16,height:16}}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-            Red de abogados \u2014 carga de casos
+            Red de abogados — carga de casos
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {byLawyer.map((a) => (
@@ -409,7 +409,7 @@ function TabAbogados({ cases }) {
               </div>
               <div className="profile-cases">
                 {myCases.length === 0 ? (
-                  <div className="empty-cases">Sin casos asignados a\u00fan</div>
+                  <div className="empty-cases">Sin casos asignados aún</div>
                 ) : (
                   [...myCases].reverse().map((c, i) => (
                     <div key={i} className="case-item">
@@ -473,7 +473,7 @@ export default function App() {
     })),
     {
       id: "dashboard",
-      label: "12 Tablas IA \u2014 Panel",
+      label: "12 Tablas IA — Panel",
       dot: newCaseCount > 0,
       icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>,
     },
@@ -489,15 +489,15 @@ export default function App() {
     <>
       <div className="topbar">
         <div className="topbar-logo">
-          <div className="icon" style={{ fontSize:"14px", width:"28px", height:"28px" }}>\u2696</div>
+          <div className="icon" style={{ fontSize:"14px", width:"28px", height:"28px" }}>⚖</div>
           <div>
             <div className="name">12 Tablas <span>IA</span></div>
-            <div className="sub">Plataforma de orientaci\u00f3n jur\u00eddica</div>
+            <div className="sub">Plataforma de orientación jurídica</div>
           </div>
         </div>
         <div className="topbar-right">
           <span className="empresa-badge">{EMPRESAS.length} empresas activas</span>
-          <span className="empresa-badge" style={{ color: "rgba(255,255,255,.5)", fontSize: 11 }}>MVP \u00b7 TFG 2026</span>
+          <span className="empresa-badge" style={{ color: "rgba(255,255,255,.5)", fontSize: 11 }}>MVP · TFG 2026</span>
         </div>
       </div>
 
